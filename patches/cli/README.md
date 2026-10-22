@@ -8,7 +8,7 @@ CLI 里已有、但 VS Code 扩展没暴露的能力，全部在宿主侧实现�
 |---|---|---|
 | `patch_slash_wave1.py` | 接入 8 个斜杠命令：`/fork` `/undo` `/title` `/status` `/usage` `/tasks` `/skills` `/plugins`（白名单 + 分发 + handler + `/` 补全菜单四处） | `extension.js` |
 | `patch_slash_view.py` | `/view`：只渲染最近 N 轮，治长会话卡顿 | `extension.js` + `package.json` |
-| `apply_pj.py` | 会话重命名（把 `/title` 搬到会话列表 GUI，Delete 旁 Rename） | `webview.js` |
+| `apply_pj.py` | **手动给历史对话命名**：会话列表每一行加 Rename（等价 `/title`，历史会话也能改） | `webview.js` |
 | `apply_pn.py` → `apply_po.py` → `apply_pp.py` → `apply_pq.py` → `apply_ps.py` → `apply_pt.py` | 权限模式按钮：加按钮 → 改下拉 → 打开会话时加载 → 点击等价发 `/auto`、`/yolo` → 链路修正 | `webview.js` |
 | `fast-session-restore/` | 打开长会话时不恢复历史 subagent（`KIMI_CODE_LOAD_SUBAGENTS=true` 恢复） | `extension.js` |
 
