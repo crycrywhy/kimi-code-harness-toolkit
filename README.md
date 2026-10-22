@@ -21,7 +21,7 @@
 |---|---|
 | `patches/cli/` | **CLI 功能补齐**：8 个斜杠命令、`/view`、**会话重命名（含历史会话）**、权限模式切换、历史会话打开加速 |
 
-## 安装（三步）
+## 安装（两步）
 
 1. **打补丁**：`patches/cli/` 里按 README 的顺序执行（每个脚本先备份为 `*.bak-<时间>-before-xxx`）。
 2. **Reload Window**。
@@ -35,7 +35,6 @@
 
 ## 已知限制
 
-- 图片墙单块建议 ≤4 格；`render_diagram` 默认显示宽度 520px（`max_width` 可调）。
 - 会话加速补丁默认不恢复历史 subagent，需要时设 `KIMI_CODE_LOAD_SUBAGENTS=true`。
 
 ## License
