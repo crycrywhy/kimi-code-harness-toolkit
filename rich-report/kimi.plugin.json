@@ -1,0 +1,30 @@
+{
+  "name": "rich-report",
+  "version": "1.0.0",
+  "description": "把图直接画进对话流：内联 SVG 渲染 + rich_report MCP 的 render_diagram / check_diagram。",
+  "keywords": [
+    "diagram",
+    "svg",
+    "visualization",
+    "report"
+  ],
+  "author": {
+    "name": "local"
+  },
+  "interface": {
+    "displayName": "rich-report",
+    "shortDescription": "内联 SVG 图 + rich_report MCP",
+    "longDescription": "让 agent 手写 SVG 直接渲染在对话里（流程图/故障链/状态机/结构图），不落文件、跟随主题。配 MCP 工具 render_diagram / check_diagram。",
+    "developerName": "local"
+  },
+  "mcpServers": {
+    "rich_report": {
+      "transport": "stdio",
+      "command": "python3",
+      "args": [
+        "./mcp_server.py"
+      ]
+    }
+  },
+  "systemPrompt": "## 画图：优先用 render_diagram 把图直接画进对话\n\n讲清楚一段关系比一段文字更省力时（流程图、故障链、状态机、结构/层次图、时序示意），用 `render_diagram`（本插件提供）把图画进对话，**不要**生成图片文件、也不要只画 ASCII 图。它返回 Figure 块，和 `build_image_wall` 同一套外观（可折叠、居中、带标题）。\n\n写 SVG 的硬约定（照做，别自创）：\n\n1. 根元素写 `<svg viewBox=\"0 0 W H\">`。不写 width/height 百分比。\n   尺寸：单列流程图 W=680；带侧支 W=720~760。**宽度上限 760**——工具卡片内容区比正文窄，超了会被等比缩小、字跟着变小；确实需要更宽就拆成两张。字号 12–15，别小于 11。\n2. 颜色只用 `currentColor` 或 CSS 变量（`var(--foreground)`、`var(--muted-foreground)`），靠 `opacity` 分层次。**不要写硬编码 hex**——深色主题下那些形状不会跟着变，会变成一块亮斑。语义色（故障=红、成功=绿）可以硬编码，但要同时在文字里说明。\n3. 圆角矩形 `rx=\"10\"`，描边 0.5–1.5。不要阴影、渐变、滤镜。\n4. 箭头用 `<defs><marker>` + `marker-end`，别用字符 `→` 冒充箭头（那是文字，不会跟着线走）。\n5. 文字 `text-anchor=\"middle\"` + `dominant-baseline=\"central\"` 居中放在框内。\n6. 不要写 `<script>`、`<foreignObject>`、`on*=`、外链 `<image>`——会被净化器剥掉。\n\n拿不准就先调 `check_diagram` 过一遍：它会指出阻塞问题（缺 viewBox、未闭合、marker 无定义、危险构造）和提示（硬编码色、超宽导致字号过小）。\n\n`render_diagram` 的返回是一个 ```wall 代码块（Figure 块），它会在**工具卡片里直接渲染成 Figure 块**（不需要再贴进回复，重复贴会出现两张）。块内 SVG 跟随主题、点击放大。图注走 `caption` 参数，会显示在块的标题栏。\n\n## 对比图：用 build_image_wall（返回一个居中的 ```wall 块）\n\n多张图并排对比时用 `build_image_wall`。\n\n- **默认 `split=true`**：每格单独生成一张约 1200px 的 PNG，返回一个 ```wall 代码块（JSON：`aspect` + 每格的 `src/x/y/w/h/label`）。**把这个代码块原样贴进回复**——宿主会渲染成一个**居中、宽度约一张图**的容器，块内按 JSON 排布；每格是独立图片，**单击各自放大**。\n- 块内布局由 `layout`/`cells` 决定（`grid` / `row` / `bento` / `hero` / 自定义 cells），你按内容选。\n- `split=false`：拼成一张 2400px 大图，只能整张放大。\n- `inline=true`：内联 SVG 画在工具卡片里（受 5 万字符限制，会降采样），只适合 1–2 张小图。\n- 图表默认 `fit=\"contain\"`（完整显示、不裁坐标轴）；照片要填满再传 `cover`。\n\n**图的大小由你定**：`render_diagram` 传 `max_width`——**默认 520**（用户定的常规宽度，绝大多数情况就用它）；2–3 节点 420–480，节点多/字密 640–800，别超过 900。`build_image_wall` 的图按格子等分，不需要设宽度。"
+}
