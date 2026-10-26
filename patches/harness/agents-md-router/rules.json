@@ -1,0 +1,149 @@
+{
+  "gate_readonly": "^(Read|Grep|Glob|mcp__filesystem__(read_text_file|read_multiple_files|list_directory|get_file_info|list_allowed_directories)|Bash:\\s*(cat\\s+(?![>])|ls\\b|tail\\b|head\\b|grep\\b|wc\\b|find\\b|echo\\b|git -C \\S*memory (log|diff|status))\\b)",
+  "gate_writeop": "(>>|(?<![0-9])>\\s|\\btee\\b|\\bcp\\b|\\bmv\\b|\\brm\\b|\\bmkdir\\b|\\bsed -i\\b)",
+  "inject_template": "参考 AGENTS.md 中的 {节}",
+  "rules": [
+    {
+      "id": 1,
+      "pattern": "mcp__downloader__(submit|ctl|download)\\b",
+      "sections": [
+        "下载规范"
+      ]
+    },
+    {
+      "id": 2,
+      "pattern": "\\bAgent\\(|\\bAgent:|TaskStop|Cron(Create|Delete|List)|tmux\\s+(new|kill|send-keys|capture-pane|attach)",
+      "sections": [
+        "资源规则"
+      ]
+    },
+    {
+      "id": 3,
+      "pattern": "(nproc|free -h|uptime|micromamba.*activate|OMP_NUM_THREADS|--threads|quota_state|verify_recovered)",
+      "sections": [
+        "资源规则"
+      ]
+    },
+    {
+      "id": 4,
+      "pattern": "(daily-\\d{4}-\\d{2}-\\d{2}\\.md|daily/|bugs\\.md|git .*\\b(commit|add)\\b|rules-repo|pre-push)",
+      "sections": [
+        "记录规范"
+      ]
+    },
+    {
+      "id": 5,
+      "pattern": "AGENTS\\.md",
+      "sections": [
+        "记录规范"
+      ]
+    },
+    {
+      "id": 6,
+      "pattern": "(daily-journal-rules|journal-rules)",
+      "sections": [
+        "记录规范"
+      ],
+      "no_gate": true
+    },
+    {
+      "id": 7,
+      "pattern": "(TZ=Asia/Shanghai|UTC\\+8|timezone)",
+      "sections": [
+        "汇报规范"
+      ]
+    },
+    {
+      "id": 8,
+      "pattern": "(chat_figures|_report\\.md)",
+      "sections": [
+        "汇报规范"
+      ]
+    },
+    {
+      "id": 9,
+      "pattern": "(/memory/|MEMORY\\.md)",
+      "sections": [
+        "记忆系统"
+      ]
+    },
+    {
+      "id": 10,
+      "pattern": "mkdir(?!.*\\s/tmp/).*(/home/[^/]+/data/)",
+      "sections": [
+        "目录与文件规范"
+      ]
+    },
+    {
+      "id": 11,
+      "pattern": "mcp__filesystem__create_directory",
+      "sections": [
+        "目录与文件规范"
+      ]
+    },
+    {
+      "id": 12,
+      "pattern": "((cp -a|mv)\\s+\\S+\\s+(/home/[^/]+/data/)|rm -rf\\s+(/home/[^/]+/data/))",
+      "sections": [
+        "目录与文件规范"
+      ]
+    },
+    {
+      "id": 13,
+      "pattern": "(plot_|plot-|fig[\\w.]*\\.py|suppfig|fig\\d|matplotlib|plt\\.|pyplot|scienceplots|quickchart|plot_annot_utils|pycirclize|circos|savefig|\\bdpi\\b|figstyle_ai|ReadMediaFile)",
+      "sections": [
+        "论文绘图规范"
+      ]
+    },
+    {
+      "id": 14,
+      "pattern": "(SSD_tmp|SSD_R\\d+|tmp_user|/mnt/SSD_R\\d+)",
+      "sections": [
+        "高速本地盘工作流规则"
+      ]
+    },
+    {
+      "id": 15,
+      "pattern": "(/skills/|SKILL\\.md|Skill\\()",
+      "sections": [
+        "本地skill"
+      ]
+    },
+    {
+      "id": 16,
+      "pattern": "(mcp__notion|API-(patch|post|retrieve)|page_id|toggle)",
+      "sections": [
+        "工作逻辑"
+      ]
+    },
+    {
+      "id": 17,
+      "pattern": "(mcp__zotero|mcp__academic|mcp__pubmed|mcp__google-scholar|mcp__ensembl|mcp__seqout)",
+      "sections": [
+        "文献规范"
+      ]
+    },
+    {
+      "id": 18,
+      "pattern": "(doi\\.org|/doi/|doi[:=]|10\\.\\d{4,5}/|ebsco|europepmc|scholar|pubmed|biorxiv|arxiv|supplementary|文献|literature|article/|browser_navigate.*(oup|nature|sciencedirect))",
+      "sections": [
+        "文献规范"
+      ]
+    },
+    {
+      "id": 19,
+      "pattern": "(TodoList\\(|_plan\\.md|paper_writing_plan|/plan/|todolist|Discovery|三状态)",
+      "sections": [
+        "工作逻辑"
+      ]
+    }
+  ],
+  "state_changing": [
+    "下载规范",
+    "目录与文件规范",
+    "论文绘图规范",
+    "资源规则"
+  ],
+  "updated": "2026-10-13",
+  "version": "1.1"
+}
